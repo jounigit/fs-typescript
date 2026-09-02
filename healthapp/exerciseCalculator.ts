@@ -8,7 +8,18 @@ interface ExerciseInfo {
     average: number;
 }
 
-const calculateExercises = (target: number, args: number[]): ExerciseInfo => {
+const parseArgs = (args: Array<string>): number[] => {
+    args.forEach( arg => {
+        if (isNaN(Number(arg))) {
+            throw new Error('Provided values were not numbers!');
+        }
+    })
+    return args.map(Number);
+};
+
+const calculateExercises = (args: number[]): ExerciseInfo => {
+    const target = args[0];
+    args = args.slice(1);
     const periodLength = args.length;
     const trainingDays = args.filter(day => day > 0).length;
     const trainigsHours = args.reduce((sum, day) => sum + day, 0);
@@ -29,4 +40,13 @@ const calculateExercises = (target: number, args: number[]): ExerciseInfo => {
     };
 };
 
-console.log(calculateExercises(2, [3, 0, 2, 4.5, 0, 3, 1]));
+try {
+    const args = parseArgs(process.argv.slice(2));
+    console.log(calculateExercises(args));
+} catch (error: unknown) {
+    let errorMessage = 'Something went wrong.';
+    if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+    }
+    console.log(errorMessage);
+}
