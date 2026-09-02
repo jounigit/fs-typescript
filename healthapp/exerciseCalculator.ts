@@ -24,7 +24,7 @@ const calculateExercises = (args: number[]): ExerciseInfo => {
     const trainingDays = args.filter(day => day > 0).length;
     const trainigsHours = args.reduce((sum, day) => sum + day, 0);
     const average = trainigsHours / periodLength;
-    const targetHours = periodLength * target;
+    // const targetHours = periodLength * target;
     const success = average >= target;
     const rating = success ? 3 : average >= target * 0.75 ? 2 : 1;
     const ratingDescription = rating === 3 ? 'excellent job!!!' : rating === 2 ? 'not too bad but could be better' : 'lousy job';  
