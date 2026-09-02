@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "tsc": "tsc",
-    "calculateBmi": "tsc --noEmit && node bmiCalculator.ts"
+    "calculateBmi": "tsc && node bmiCalculator.ts",
+    "calculateExercises": "tsc && node exerciseCalculator.ts"
   },
   "author": "",
   "license": "ISC",
