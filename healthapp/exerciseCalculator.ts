@@ -13,7 +13,7 @@ const parseArgs = (args: Array<string>): number[] => {
         if (isNaN(Number(arg))) {
             throw new Error('Provided values were not numbers!');
         }
-    })
+    });
     return args.map(Number);
 };
 

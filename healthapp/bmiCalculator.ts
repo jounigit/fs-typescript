@@ -12,11 +12,11 @@ const parseArguments = (args: Array<string>): CalculateValues => {
       return {
         value1: Number(args[2]),
         value2: Number(args[3])
-      }
+      };
     } else {
       throw new Error('Provided values were not numbers!');
     }
-  }
+  };
 
 export const calculateBmi = (pituus: number, paino: number) => {
     pituus = pituus * 0.01;
