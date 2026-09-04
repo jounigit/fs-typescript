@@ -17,7 +17,7 @@ const parseArgs = (args: Array<string>): number[] => {
     return args.map(Number);
 };
 
-const calculateExercises = (args: number[]): ExerciseInfo => {
+export const calculateExercises = (args: number[]): ExerciseInfo => {
     const target = args[0];
     args = args.slice(1);
     const periodLength = args.length;
@@ -40,13 +40,15 @@ const calculateExercises = (args: number[]): ExerciseInfo => {
     };
 };
 
-try {
-    const args = parseArgs(process.argv.slice(2));
-    console.log(calculateExercises(args));
-} catch (error: unknown) {
-    let errorMessage = 'Something went wrong.';
-    if (error instanceof Error) {
-        errorMessage += ' Error: ' + error.message;
+if (process.argv[1] === import.meta.filename) {
+    try {
+        const args = parseArgs(process.argv.slice(2));
+        console.log(calculateExercises(args));
+    } catch (error: unknown) {
+        let errorMessage = 'Something went wrong.';
+        if (error instanceof Error) {
+            errorMessage += ' Error: ' + error.message;
+        }
+        console.log(errorMessage);
     }
-    console.log(errorMessage);
 }
