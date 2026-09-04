@@ -31,19 +31,24 @@ app.get('/bmi', (req, res) => {
   });
 });
 
+interface ExerciseRequestBody {
+  daily_exercises: number[];
+  target: number;
+}
+
 app.post('/exercises', (req, res) => {
-  const { daily_exercises, target } = req.body;
+  const { daily_exercises, target } = req.body as ExerciseRequestBody;
 
   if (!daily_exercises || !target) {
     res.status(400).json({ error: 'parameters missing' });
   }
 
-  if (!Array.isArray(daily_exercises) || daily_exercises.some((exercise: any) => typeof exercise !== 'number')) {
+  if (!Array.isArray(daily_exercises) || daily_exercises.some((exercise: unknown) => typeof exercise !== 'number')) {
     res.status(400).json({ error: 'malformatted parameters' });
   }
 
   const targetNum = Number(target);
-  const dailyExercisesNum = daily_exercises.map((exercise: string) => Number(exercise));
+  const dailyExercisesNum = daily_exercises.map((exercise: unknown) => Number(exercise));
 
   if (isNaN(targetNum) || dailyExercisesNum.some(isNaN)) {
     res.status(400).json({ error: 'malformatted parameters' });
