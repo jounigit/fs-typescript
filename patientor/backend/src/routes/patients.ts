@@ -1,15 +1,25 @@
-import express from 'express';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import express, { type Response } from 'express';
 import patientService from '../services/PatientService.ts';
+import type { NonSensitivePatient } from '../types.ts';
 
 const router = express.Router();
 
-router.get('/', (_req, res) => {
-  const data = patientService.getNonSensitivePatients();
-  res.send(data);
+router.get('/', (_req, res: Response<NonSensitivePatient[]>) => {
+  res.send(patientService.getNonSensitivePatients());
 });
 
-router.post('/', (_req, res) => {
-  res.send('Saving a patient!');
+router.post('/', (req, res) => {
+  const { name, dateOfBirth, ssn, gender, occupation } = req.body;
+  const newPatient = patientService.addPatient({ 
+    name, 
+    dateOfBirth, 
+    ssn, 
+    gender, 
+    occupation 
+  });
+  
+  res.send(newPatient);
 });
 
 export default router;

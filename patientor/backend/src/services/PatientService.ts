@@ -1,5 +1,6 @@
 import patientData from '../../data/patients.ts' with { type: 'json' };
 import type { Patient, NonSensitivePatient, NewPatient } from '../types.ts';
+import { randomUUID } from 'node:crypto';
 
 const patients: Patient[] = patientData as Patient[];
 // const patientsNonSensitive: NonSensitivePatient[] = patientData as NonSensitivePatient[];
@@ -20,7 +21,7 @@ const getNonSensitivePatients = (): NonSensitivePatient[] => {
 
 const addPatient = (entry: NewPatient): Patient => {
   const newPatient = {
-    id: String(patients.length + 1),
+    id: randomUUID(),
     ...entry
   };
   patients.push(newPatient);
