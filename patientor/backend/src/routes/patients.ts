@@ -1,38 +1,19 @@
-import express, { type Response } from 'express';
-import patientService from '../services/PatientService.ts';
-import type { NonSensitivePatient } from '../types.ts';
-import parseNewPatient from '../utils.ts';
+import express, { type Response, type Request } from "express";
+import patientService from "../services/PatientService.ts";
+import type { NewPatient, NonSensitivePatient, Patient } from "../types.ts";
+import { errorMiddleware, newPatientParser } from "../middleware.ts";
 
 const router = express.Router();
 
-router.get('/', (_req, res: Response<NonSensitivePatient[]>) => {
+router.get("/", (_req, res: Response<NonSensitivePatient[]>) => {
   res.send(patientService.getNonSensitivePatients());
 });
 
-router.post('/', (req, res) => {
-  try {
-    const newPatient = parseNewPatient(req.body);
-    const addedPatient = patientService.addPatient(newPatient);
-    res.json(addedPatient);
-  } catch (error: unknown) {
-    let errorMessage = 'Something went wrong.';
-    if (error instanceof Error) {
-      errorMessage += ' Error: ' + error.message;
-    }
-    res.status(400).send(errorMessage);
-  }
-
+router.post("/", newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<Patient>) => {
+  const addedPatient = patientService.addPatient(req.body);
+  res.json(addedPatient);
 });
 
-export default router;
+router.use(errorMiddleware);
 
-  // const { name, dateOfBirth, ssn, gender, occupation } = req.body;
-  // const newPatient = patientService.addPatient({ 
-  //   name, 
-  //   dateOfBirth, 
-  //   ssn, 
-  //   gender, 
-  //   occupation 
-  // });
-  
-  // res.send(newPatient);
+export default router;
