@@ -1,38 +1,80 @@
-const Header: React.FC<{ name: string }> = ({ name }) => (
-    <h1>Hello, {name}</h1>
-);
+import { Content } from "./components/Content";
+import { Header } from "./components/Header";
+import { Total } from "./components/Total";
 
-const Content: React.FC<{ parts: { name: string; exerciseCount: number }[] }> = ({ parts }) => (
-    <div>
-        {parts.map((part, index) => (
-            <p key={index}>
-                {part.name} {part.exerciseCount}
-            </p>
-        ))}
-    </div>
-);
+interface CoursePartBase {
+  name: string;
+  exerciseCount: number;
+}
 
-const Total: React.FC<{ parts: { name: string; exerciseCount: number }[] }> = ({ parts }) => {
-    const total = parts.reduce((sum, part) => sum + part.exerciseCount, 0);
-    return <p>Total number of exercises: {total}</p>;
-};  
+interface CoursePartWithDescription extends CoursePartBase {
+  description: string;
+}
+
+interface CoursePartBasic extends CoursePartWithDescription {
+  kind: "basic"
+}
+
+interface CoursePartGroup extends CoursePartBase {
+  groupProjectCount: number;
+  kind: "group"
+}
+
+interface CoursePartBackground extends CoursePartWithDescription {
+  backgroundMaterial: string;
+  kind: "background"
+}
+
+interface CoursePartSpecial extends CoursePartWithDescription {
+  requirements: string[];
+  kind: "special"
+}
+
+export type CoursePart = CoursePartBasic | CoursePartGroup | CoursePartBackground | CoursePartSpecial;
 
 const App = () => {
   const courseName = "Half Stack application development";
-  const courseParts = [
-    {
-      name: "Fundamentals",
-      exerciseCount: 10
-    },
-    {
-      name: "Using props to pass data",
-      exerciseCount: 7
-    },
-    {
-      name: "Deeper type usage",
-      exerciseCount: 14
-    }
-  ];
+
+  const courseParts: CoursePart[] = [
+  {
+    name: "Fundamentals",
+    exerciseCount: 10,
+    description: "This is an awesome course part",
+    kind: "basic"
+  },
+  {
+    name: "Using props to pass data",
+    exerciseCount: 7,
+    groupProjectCount: 3,
+    kind: "group"
+  },
+  {
+    name: "Basics of type Narrowing",
+    exerciseCount: 7,
+    description: "How to go from unknown to string",
+    kind: "basic"
+  },
+  {
+    name: "Deeper type usage",
+    exerciseCount: 14,
+    description: "Confusing description",
+    backgroundMaterial: "https://type-level-typescript.com/template-literal-types",
+    kind: "background"
+  },
+  {
+    name: "TypeScript in frontend",
+    exerciseCount: 10,
+    description: "a hard part",
+    kind: "basic",
+  },
+  {
+  name: "Backend development",
+  exerciseCount: 21,
+  description: "Typing the backend",
+  requirements: ["nodejs", "jest"],
+  kind: "special"
+}
+];
 
   const totalExercises = courseParts.reduce((sum, part) => sum + part.exerciseCount, 0);
   console.log(`Total number of exercises: ${totalExercises}`);
