@@ -1,16 +1,7 @@
-import { useEffect, useState } from "react";
 import type { DiaryEntry } from "../types";
-import * as diaryService from "../diaryService";
 
+export const Content = ({ diaries }: { diaries: DiaryEntry[] }) => {
 
-export const Content = () => {
-    const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
-
-    useEffect(() => {
-        diaryService.getAllDiaries().then((data) => {
-            setDiaries(data);
-        });
-    }, []);
     console.log(diaries);
     return (
         <div>

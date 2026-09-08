@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import type { DiaryEntry, Weather, Visibility } from '../types';
 import * as diaryService from '../diaryService';
 
-const DiaryForm = () => {
-    const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
+interface DiaryFormProps {
+    setDiaries: React.Dispatch<React.SetStateAction<DiaryEntry[]>>;
+}
+
+const DiaryForm = ({ setDiaries }: DiaryFormProps) => {
     const [date, setDate] = useState('');
     const [weather, setWeather] = useState<Weather | ''>('');
     const [visibility, setVisibility] = useState<Visibility | ''>('');
@@ -38,13 +41,11 @@ const DiaryForm = () => {
         diaryService.createDiary(newDiaryEntry)
             .then((createdEntry) => {
                 console.log('Diary entry created:', createdEntry);
-                // Optionally, you can reset the form fields here
                 setDate('');
                 setWeather('');
                 setVisibility('');
                 setComment('');
-                // Update the diaries state to include the newly created entry
-                setDiaries([...diaries, createdEntry]);
+                setDiaries((prevDiaries) => [...prevDiaries, createdEntry]);
             })
             .catch((error) => {
                 console.error('Error creating diary entry:', error);
@@ -55,12 +56,12 @@ const DiaryForm = () => {
         <form onSubmit={handleSubmit}>
             <h3>Add New Diary Entry</h3>
             <div>
-                <label>Date:</label><br />
+                <label>Date:</label>
                 <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
             </div>
             <br />
             <div>
-                <label>Weather:</label><br />
+                <label>Weather:</label>
                 <select value={weather} onChange={(e) => onWeatherChange(e, setWeather)} required>
                     <option value="">Select weather</option>
                     <option value="sunny">Sunny</option>
@@ -72,7 +73,7 @@ const DiaryForm = () => {
             </div>
             <br />
             <div>
-                <label>Visibility:</label><br />
+                <label>Visibility:</label>
                 <select value={visibility} onChange={(e) => onVisibilityChange(e, setVisibility)} required>
                     <option value="">Select visibility</option>
                     <option value="great">Great</option>
@@ -83,7 +84,7 @@ const DiaryForm = () => {
             </div>
             <br />
             <div>
-                <label>Comment:</label><br />
+                <label>Comment:</label>
                 <textarea value={comment} onChange={(e) => setComment(e.target.value)} />
             </div>
             <button type="submit">Add Diary Entry</button>
