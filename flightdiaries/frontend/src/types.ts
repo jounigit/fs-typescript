@@ -14,7 +14,7 @@ export const Visibility = {
   Great: 'great',
   Good: 'good',
   Ok: 'ok',
-  Poor: 'poor',
+  Poor: 'poor'
 } as const;
 
 export type Visibility = typeof Visibility[keyof typeof Visibility];
@@ -33,3 +33,8 @@ export interface DiaryEntry extends NewDiaryEntry {
 }
 
 export type NonSensitiveDiaryEntry = Omit<DiaryEntry, 'comment'>;
+
+export interface ValidationError {
+  message: string;
+  errors: Record<string, string[]>
+}

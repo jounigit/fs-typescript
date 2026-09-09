@@ -8,8 +8,8 @@ export const Content = ({ diaries }: { diaries: DiaryEntry[] }) => {
             <h3>Diary entries:</h3>
             {diaries.map((diary) => (
                 <div key={diary.id}>
-                    <p><b>Date: {diary.date}</b><br />
-                    <b>Weather: </b> {diary.weather}<br />
+                    <h4>{diary.date}</h4>
+                    <p><b>Weather: </b> {diary.weather}<br />
                     <b>Visibility: </b> {diary.visibility}<br />
                     <b>Comment: </b> {diary.comment}</p>
                 </div>

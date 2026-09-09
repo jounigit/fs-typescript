@@ -11,6 +11,7 @@ const DiaryForm = ({ setDiaries }: DiaryFormProps) => {
     const [weather, setWeather] = useState<Weather | ''>('');
     const [visibility, setVisibility] = useState<Visibility | ''>('');
     const [comment, setComment] = useState('');
+    const [error, setError] = useState('');
 
     const onWeatherChange = (
         event: React.ChangeEvent<HTMLSelectElement>,
@@ -41,20 +42,29 @@ const DiaryForm = ({ setDiaries }: DiaryFormProps) => {
         diaryService.createDiary(newDiaryEntry)
             .then((createdEntry) => {
                 console.log('Diary entry created:', createdEntry);
+                setError('');
                 setDate('');
                 setWeather('');
                 setVisibility('');
                 setComment('');
-                setDiaries((prevDiaries) => [...prevDiaries, createdEntry]);
+                setDiaries((prevDiaries) => (
+                    createdEntry ? [...prevDiaries, createdEntry] : prevDiaries
+                ));
             })
             .catch((error) => {
-                console.error('Error creating diary entry:', error);
+                if (error instanceof Error) {
+                    setError(error.message);
+                } else {
+                    setError(`Error: ${String(error.message)}`);
+                }
             });
     };
 
     return (
         <form onSubmit={handleSubmit}>
             <h3>Add New Diary Entry</h3>
+            {/* get thrown errors here */}
+            {error && <p style={{color: 'red'}}>{error}</p>}
             <div>
                 <label>Date:</label>
                 <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
@@ -87,7 +97,11 @@ const DiaryForm = ({ setDiaries }: DiaryFormProps) => {
                 <label>Comment:</label>
                 <textarea value={comment} onChange={(e) => setComment(e.target.value)} />
             </div>
-            <button type="submit">Add Diary Entry</button>
+            <button 
+            style={{backgroundColor: 'lightgray'}} 
+            type="submit">
+                Add
+            </button>
         </form>
     );
 };
