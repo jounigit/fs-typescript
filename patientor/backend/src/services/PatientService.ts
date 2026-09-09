@@ -3,7 +3,6 @@ import type { Patient, NonSensitivePatient, NewPatient } from '../types.ts';
 import { randomUUID } from 'node:crypto';
 
 const patients: Patient[] = patientData as Patient[];
-// const patientsNonSensitive: NonSensitivePatient[] = patientData as NonSensitivePatient[];
 
 const getPatients = (): Patient[] => {
   return patients;
@@ -19,6 +18,10 @@ const getNonSensitivePatients = (): NonSensitivePatient[] => {
   }));
 };
 
+const getPatientById = (id: string): Patient | undefined => {
+  return patients.find((patient) => patient.id === id);
+};
+
 const addPatient = (entry: NewPatient): Patient => {
   const newPatient = {
     id: randomUUID(),
@@ -31,5 +34,6 @@ const addPatient = (entry: NewPatient): Patient => {
 export default {
     getPatients,
     getNonSensitivePatients,
-    addPatient
+    addPatient,
+    getPatientById
 };
