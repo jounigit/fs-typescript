@@ -3,7 +3,6 @@ import cors from 'cors';
 import diaryRouter from './routes/diaries.ts';
 
 const app = express();
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 app.use(cors());
 app.use(express.json());
 
