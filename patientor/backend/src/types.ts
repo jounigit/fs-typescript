@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+
 export interface Diagnose {
   code: string;
   name: string;
