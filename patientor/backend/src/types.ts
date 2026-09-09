@@ -34,7 +34,7 @@ export const NewPatientSchema = z.object({
   occupation: z.string(),
   gender: z.enum(Gender),
   dateOfBirth: z.string(),
-  entries: z.array(z.object({}))
+  // entries: z.array(z.object({}))
 });
 
 export type NewPatient = z.infer<typeof NewPatientSchema>;
@@ -42,9 +42,5 @@ export type NewPatient = z.infer<typeof NewPatientSchema>;
 export interface NewPatientEntry extends NewPatient {
   id: string;
 }
-
-// export interface Patient extends NewPatientEntry {
-//   id: string;
-// }
 
 export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;

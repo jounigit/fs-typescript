@@ -25,7 +25,8 @@ const getPatientById = (id: string): Patient | undefined => {
 const addPatient = (entry: NewPatient): Patient => {
   const newPatient = {
     id: randomUUID(),
-    ...entry
+    ...entry,
+    entries: []
   };
   patients.push(newPatient);
   return newPatient;
