@@ -22,7 +22,7 @@ const DiaryForm = ({ setDiaries }: DiaryFormProps) => {
     };
 
     const onVisibilityChange = (
-        event: React.ChangeEvent<HTMLSelectElement>,
+        event: React.ChangeEvent<HTMLInputElement>,
         setVisibility: React.Dispatch<React.SetStateAction<Visibility | ''>>,
     ) => {
         const selectedVisibility = event.target.value as Visibility;
@@ -115,18 +115,48 @@ const DiaryForm = ({ setDiaries }: DiaryFormProps) => {
             <br />
             <div>
                 <label>Visibility:</label>
-                <select value={visibility} onChange={(e) => onVisibilityChange(e, setVisibility)} required>
-                    <option value="">Select visibility</option>
-                    <option value="great">Great</option>
-                    <option value="good">Good</option>
-                    <option value="ok">Ok</option>
-                    <option value="poor">Poor</option>
-                </select>
+                <input
+                    type="radio"
+                    name="visibility"
+                    value="great"
+                    checked={visibility === 'great'}
+                    onChange={(e) => onVisibilityChange(e, setVisibility)}
+                />
+                Great
+                <input
+                    type="radio"
+                    name="visibility"
+                    value="good"
+                    checked={visibility === 'good'}
+                    onChange={(e) => onVisibilityChange(e, setVisibility)}
+                />
+                Good
+                <input
+                    type="radio"
+                    name="visibility"
+                    value="ok"
+                    checked={visibility === 'ok'}
+                    onChange={(e) => onVisibilityChange(e, setVisibility)}
+                />
+                Ok
+                <input
+                    type="radio"
+                    name="visibility"
+                    value="poor"
+                    checked={visibility === 'poor'}
+                    onChange={(e) => onVisibilityChange(e, setVisibility)}
+                />
+                Poor
             </div>
             <br />
             <div>
                 <label>Comment:</label>
-                <textarea value={comment} onChange={(e) => setComment(e.target.value)} />
+                <input 
+                    type="text"
+                    name="comment"
+                    value={comment} 
+                    onChange={(e) => setComment(e.target.value)} 
+                />
             </div>
             <button 
             style={{backgroundColor: 'lightgray'}} 
