@@ -14,7 +14,7 @@ const DiaryForm = ({ setDiaries }: DiaryFormProps) => {
     const [error, setError] = useState('');
 
     const onWeatherChange = (
-        event: React.ChangeEvent<HTMLSelectElement>,
+        event: React.ChangeEvent<HTMLInputElement>,
         setWeather: React.Dispatch<React.SetStateAction<Weather | ''>>,
     ) => {
         const selectedWeather = event.target.value as Weather;
@@ -70,17 +70,48 @@ const DiaryForm = ({ setDiaries }: DiaryFormProps) => {
                 <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
             </div>
             <br />
-            <div>
                 <label>Weather:</label>
-                <select value={weather} onChange={(e) => onWeatherChange(e, setWeather)} required>
-                    <option value="">Select weather</option>
-                    <option value="sunny">Sunny</option>
-                    <option value="rainy">Rainy</option>
-                    <option value="cloudy">Cloudy</option>
-                    <option value="stormy">Stormy</option>
-                    <option value="windy">Windy</option>
-                </select>
-            </div>
+                <input
+                    type="radio"
+                    name="weather"
+                    value="sunny"
+                    checked={weather === 'sunny'}
+                    onChange={(e) => onWeatherChange(e, setWeather)}
+                />
+                Sunny
+                <input
+                    type="radio"
+                    name="weather"
+                    value="rainy"
+                    checked={weather === 'rainy'}
+                    onChange={(e) => onWeatherChange(e, setWeather)}
+                />
+                Rainy
+                <input
+                    type="radio"
+                    name="weather"
+                    value="cloudy"
+                    checked={weather === 'cloudy'}
+                    onChange={(e) => onWeatherChange(e, setWeather)}
+                />
+                Cloudy
+                <input
+                    type="radio"
+                    name="weather"
+                    value="stormy"
+                    checked={weather === 'stormy'}
+                    onChange={(e) => onWeatherChange(e, setWeather)}
+                />
+                Stormy
+                <input
+                    type="radio"
+                    name="weather"
+                    value="windy"
+                    checked={weather === 'windy'}
+                    onChange={(e) => onWeatherChange(e, setWeather)}
+                />
+                Windy
+            
             <br />
             <div>
                 <label>Visibility:</label>
