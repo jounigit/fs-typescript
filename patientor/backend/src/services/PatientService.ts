@@ -2,7 +2,7 @@ import patientData from '../../data/patients.ts' with { type: 'json' };
 import type { Patient, NonSensitivePatient, NewPatient } from '../types.ts';
 import { randomUUID } from 'node:crypto';
 
-const patients: Patient[] = patientData as Patient[];
+const patients: Patient[] = patientData;
 
 const getPatients = (): Patient[] => {
   return patients;
