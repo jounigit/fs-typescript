@@ -1,11 +1,11 @@
-import { FC, JSX} from 'react';
+import { FC } from 'react';
 import type {
-    Diagnosis,
     Entry,
     HealthCheckEntry,
     HospitalEntry,
     OccupationalHealthcareEntry
 } from '../types';
+import { listCodes } from './helpers';
 
 const HealthCheck: FC<{entry: HealthCheckEntry}> = ({entry}) => {
     return (
@@ -35,19 +35,6 @@ const OccupationalHealthcare:
         );
     };
 
-function listCodes(codes: Array<Diagnosis['code']>): JSX.Element {
-    return (
-        <>
-            {codes.map((code, i) => {
-                return (
-                    <ul key={i}>
-                        <li style={{marginBottom: '-1rem'}}>{code}</li>
-                    </ul>
-                );
-            })}
-        </>
-    );
-}
 /******************************************************/
 const EntryDetails: FC<{entry: Entry}> = ({entry}) => {
     switch (entry.type) {
