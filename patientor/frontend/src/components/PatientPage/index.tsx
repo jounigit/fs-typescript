@@ -28,27 +28,27 @@ const PatientPage = () => {
     return <div>Patient not found</div>;
   }
 
-  let ic;
+  let icon;
 
   if (patient.gender === 'male') {
-    ic = <MaleIcon />;
+    icon = <MaleIcon />;
   } 
   if (patient.gender === 'female') {
-    ic = <FemaleIcon />;
+    icon = <FemaleIcon />;
   }
   if (patient.gender === 'other') {
-    ic = <TransgenderIcon />;
+    icon = <TransgenderIcon />;
   }
 
   return (
     <div>
       <h1>Patient Details</h1>
-      <p>Name: {patient.name} {ic}</p>
+      <p>Name: {patient.name} {icon}</p>
       {/* <p>Gender: {patient.gender}</p> */}
       <p>Occupation: {patient.occupation}</p>
       <p>Date of Birth: {patient.dateOfBirth}</p>
       <p>SSN: {patient.ssn}</p>
-      <p>Entries: no entries yet</p>
+      <p>Entries: {patient.entries.length}</p>
     </div>
   );
 };
