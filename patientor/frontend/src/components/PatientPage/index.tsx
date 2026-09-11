@@ -38,9 +38,9 @@ const PatientPage = (): JSX.Element => {
   return (
     <div>
       <h1>{patient.name} {icon}</h1>
-      <p style={{marginBottom: '-0.5rem'}}>Occupation: {patient.occupation}</p>
-      <p style={{marginBottom: '-0.5rem'}}>Date of Birth: {patient.dateOfBirth}</p>
       <p style={{marginBottom: '-0.5rem'}}>SSN: {patient.ssn}</p>
+      <p style={{marginBottom: '-0.5rem'}}>Occupation: {patient.occupation}</p>
+      {/* <p style={{marginBottom: '-0.5rem'}}>Date of Birth: {patient.dateOfBirth}</p> */}
       <h3>entries</h3>
       {showEntries}
     </div>
