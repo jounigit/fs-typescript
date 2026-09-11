@@ -30,7 +30,10 @@ const OccupationalHealthcare:
         return (
         <div>
             <p>{entry.date} {entry.description}</p>
-            {entry.diagnosisCodes && listCodes(entry.diagnosisCodes)}
+            {
+                entry.diagnosisCodes 
+                && listCodes(entry.diagnosisCodes) 
+            }
         </div>
         );
     };

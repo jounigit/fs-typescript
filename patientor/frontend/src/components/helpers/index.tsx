@@ -1,6 +1,6 @@
-import { JSX } from "react";
+import { JSX, } from "react";
 import { Diagnosis } from "../../types";
-import diagnosesService from "../../services/diagnoses";
+import { DiagnosisName } from "./DiagnoseName";
 
 export function listCodes(codes: Array<Diagnosis['code']>): JSX.Element {
     return (
@@ -8,7 +8,9 @@ export function listCodes(codes: Array<Diagnosis['code']>): JSX.Element {
             {codes.map((code, i) => {
                 return (
                     <ul key={i}>
-                        <li style={{marginBottom: '-1rem'}}>{code}</li>
+                        <li style={{marginBottom: '-1rem'}}>
+                            {code} <DiagnosisName code={code} />
+                        </li>
                     </ul>
                 );
             })}
@@ -16,16 +18,3 @@ export function listCodes(codes: Array<Diagnosis['code']>): JSX.Element {
     );
 }
 
-// const diagnosesList = async () => {
-//     const res = await diagnosesService.getAll();
-//     return res;
-// };
-
-export async function findDiagnosis(code: string) {
-    const diagnosesList = await diagnosesService.getAll();
-    if (diagnosesList.length) {
-        const diagnose = diagnosesList.find((d) => d.code === code);
-        return diagnose;
-    }
-    return;
-}
