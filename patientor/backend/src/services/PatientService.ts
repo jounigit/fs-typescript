@@ -1,5 +1,5 @@
 import patientData from '../../data/patients.ts' with { type: 'json' };
-import type { Patient, NonSensitivePatient, NewPatient } from '../types.ts';
+import type { Patient, NonSensitivePatient, NewPatient, NewEntry, Entry } from '../types.ts';
 import { randomUUID } from 'node:crypto';
 
 const patients: Patient[] = patientData;
@@ -32,9 +32,26 @@ const addPatient = (entry: NewPatient): Patient => {
   return newPatient;
 };
 
+const addEntry = (id: string, entry: NewEntry): Patient| undefined => {
+  const patient = patients.find((patient) => patient.id === id);
+
+  if(patient === undefined) return undefined;
+
+  const newEntry = {
+    id: randomUUID(),
+    ...entry
+  } as Entry;
+
+  console.log('NEW ENTRY: ', newEntry);
+
+  patient.entries.push(newEntry);
+  return patient;
+};
+
 export default {
     getPatients,
     getNonSensitivePatients,
     addPatient,
-    getPatientById
+    getPatientById,
+    addEntry
 };

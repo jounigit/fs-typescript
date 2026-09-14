@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import { NewPatientSchema } from './types.ts';
+import { NewEntrySchema, NewPatientSchema } from './types.ts';
 import{ z }from 'zod';
 
 export const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
@@ -17,4 +17,13 @@ export const errorMiddleware = (error: unknown, _req: Request, res: Response, _n
     } else {
         res.status(500).send('unknown error');
     }
+};
+
+export const NewEntryParser = (req: Request, _res: Response, next: NextFunction) => {
+  try {
+    NewEntrySchema.parse(req.body);
+    next();
+  } catch (error: unknown) {
+    next(error);
+  };
 };
