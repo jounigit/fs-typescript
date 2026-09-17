@@ -9,13 +9,10 @@ import AddPatientModal from "../AddPatientModal";
 import HealthRatingBar from "../HealthRatingBar";
 
 import patientService from "../../services/patients";
+import usePatient from "../../hooks/usePatient";
 
-interface Props {
-  patients : Patient[]
-  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>
-}
-
-const PatientListPage = ({ patients, setPatients } : Props ) => {
+const PatientListPage = ( ) => {
+  const { patients, setPatients } = usePatient()!;
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>();

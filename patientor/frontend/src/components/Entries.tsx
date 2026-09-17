@@ -73,9 +73,10 @@ const EntryDetails: FC<{entry: Entry}> = ({entry}) => {
 };
 
 export const Entries = ({entries}: {entries: Entry[]}) => {
+    const data = entries as Entry[];
     return (
         <div>
-            {entries.map((val, index) => (
+            {data.map((val, index) => (
                 <div key={index} style={{ border: 'solid 1px', padding: '1px 5px 1px', margin: '5px'}}>
                     <EntryDetails entry={val} />
                 </div>
