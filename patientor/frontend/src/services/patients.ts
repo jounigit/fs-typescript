@@ -1,5 +1,5 @@
 import axios from "axios";
-import { EntryFormValues, Patient, PatientFormValues } from "../types";
+import { EntryWithoutId, Patient, PatientFormValues, ValidationError } from "../types";
 
 import { apiBaseUrl } from "../constants";
 
@@ -28,13 +28,20 @@ const create = async (object: PatientFormValues) => {
   return data;
 };
 
-const createEntry = async (id: string, object: EntryFormValues) => {
-  const { data } = await axios.post<Patient>(
-    `${apiBaseUrl}/patients/${id}/entries`,
-    object
-  );
-
-  return data;
+const createEntry = async (id: string, object: EntryWithoutId) => {
+  try {
+  const response = await axios.post<Patient>(`${apiBaseUrl}/patients/${id}/entries`, object);
+  return response.data;
+  } catch (error) {
+        if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
+            console.log(error.status);
+            console.error(error.response);
+            throw error.response?.data ?? new Error("Error: Validation failed");
+        } else {
+            console.error(error);
+            throw new Error("Error: unkown error.");
+        }
+    } 
 };
 
 export default {

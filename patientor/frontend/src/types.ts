@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface Diagnosis {
   code: string;
   name: string;
@@ -25,10 +27,10 @@ export type PatientFormValues = Omit<Patient, "id" | "entries">;
 /************** entry types *********************** */
 interface BaseEntry {
   id: string;
-  description: string;
   date: string;
+  description: string;
   specialist: string;
-  diagnosisCodes?: Array<Diagnosis['code']>;
+  diagnosisCodes?: Array<Diagnosis['code']> | undefined;
 }
 
 const HealthCheckRating = {
@@ -44,7 +46,6 @@ export interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
-export type HealthCheckEntryValues = Omit<HealthCheckEntry, 'id'>;
 
 interface SickLeave {
     startDate: string;
@@ -72,9 +73,63 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
+export enum TypeOfEntry {
+  HealthCheck = "Health Check",
+  OccupationalHealthcare = "Occupational Healthcare",
+  Hospital = "Hospital"
+}
+
+const BaseEntrySchema = z.object({
+  date: z.string(),
+  description: z.string(),
+  specialist: z.string(),
+  diagnosisCodes: z.array(z.string()).optional(),
+});
+
+const HealthCheckEntrySchema = BaseEntrySchema.extend({
+  type: z.literal("HealthCheck"),
+  healthCheckRating: z.union([
+    z.literal(HealthCheckRating.Healthy),
+    z.literal(HealthCheckRating.LowRisk),
+    z.literal(HealthCheckRating.HighRisk),
+    z.literal(HealthCheckRating.CriticalRisk)
+  ]),
+});
+
+const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
+  type: z.literal("OccupationalHealthcare"),
+  employerName: z.string(),
+  sickLeave: z.object({
+    startDate: z.string(),
+    endDate: z.string(),
+  }).optional(),
+});
+
+const HospitalEntrySchema = BaseEntrySchema.extend({
+  type: z.literal("Hospital"),
+  discharge: z.object({
+    date: z.string(),
+    criteria: z.string(),
+  }).optional(),
+});
+
+export const NewEntrySchema = z.discriminatedUnion("type", [
+  HealthCheckEntrySchema,
+  OccupationalHealthcareEntrySchema,
+  HospitalEntrySchema,
+]);
+
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 
-export type EntryFormValues = UnionOmit<Entry, 'id'>
+export type NewPatientEntry = z.infer<typeof NewEntrySchema>;
+export type EntryWithoutId = UnionOmit<NewPatientEntry, 'id'>;
+
+// export type EntryFormValues = UnionOmit<Entry, 'id'>
+
+export interface ValidationError {
+  message: string;
+  errors: Record<string, string[]>
+}
 
 /*********************************************** */
 export const assertNever = (value: never): never => {

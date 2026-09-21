@@ -1,9 +1,12 @@
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import { PatientContextProvider } from './PatientContext.tsx';
+import React from 'react';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <PatientContextProvider>
-    <App />
-  </PatientContextProvider>
+  <React.StrictMode>
+      <PatientContextProvider>
+        <App />
+      </PatientContextProvider>
+  </React.StrictMode>
 );

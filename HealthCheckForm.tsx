@@ -1,11 +1,10 @@
 import { Alert, Button, Grid, TextField } from "@mui/material";
-import { HealthCheckRating, NewPatientEntry, Patient } from "../../types";
+import { HealthCheckEntryValues, HealthCheckRating } from "../../types";
 import React, { SyntheticEvent, useState } from "react";
-import patientService from "../../services/patients";
 
 interface Props {
-    patientId: string;
-    setPatient: React.Dispatch<React.SetStateAction<Patient | undefined>>;
+    onSubmit: (values: HealthCheckEntryValues) => void;
+    error?: string;
 }
 
 const DivStyle = {
@@ -15,51 +14,44 @@ const DivStyle = {
     width: '500px'
 };
 
-const AddHealthCheckForm = ({ patientId, setPatient }: Props) => {
+const AddHealthCheckForm = ({ onSubmit, error }: Props) => {
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
     const [specialist, setSpecialist] = useState('');
     const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating>(0);
-    const [diagnosisCodesInput, setDiagnosisCodesInput] = useState('');
-    const [error, setError] = useState<string>();
+    const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
 
     const onHealthCheckRating = (
         event: React.ChangeEvent<HTMLSelectElement>,
+        setHealthCheckRating: React.Dispatch<React.SetStateAction<HealthCheckRating>>,
     ) => {
-        event.preventDefault();
-        const selected = Number(event.target.value)  as HealthCheckRating;
+        const selected = event.target.value as unknown as HealthCheckRating;
         setHealthCheckRating(selected);
     };
 
-    const diagnosisCodes = diagnosisCodesInput
-        .split(',')
-        .map((code) => code.trim())
-        .filter(Boolean);
-    
-    const addEntry = async (event: SyntheticEvent) => {
+    const onDiagnosisCodes = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const codes = event.target.value
+            .split(',')
+            .map((code) => code.trim())
+            .filter(Boolean);
+        setDiagnosisCodes(codes);
+    };
+
+    const addEntry = (event: SyntheticEvent) => {
        event.preventDefault();
-       setError(undefined);
-
-       try {
-         const newEntry: NewPatientEntry = {
-           type: "HealthCheck",
-           date,
-           description,
-           specialist,
-           healthCheckRating,
-           diagnosisCodes,
-         };
-
-         const updatedPatient = await patientService.createEntry(patientId, newEntry);
-         setPatient(updatedPatient);
-         setDate('');
-         setDescription('');
-         setSpecialist('');
-         setHealthCheckRating(0);
-         setDiagnosisCodesInput('');
-       } catch (error) {
-         setError(error instanceof Error ? error.message : 'Failed to add health check entry.');
-       }
+       onSubmit({
+        type: "HealthCheck",
+        date,
+        description,
+        specialist,
+        healthCheckRating,
+        diagnosisCodes
+       });
+       setDate('');
+       setDescription('');
+       setSpecialist('');
+       setHealthCheckRating(0);
+       setDiagnosisCodes([]);
     };
 
     return (
@@ -110,17 +102,17 @@ const AddHealthCheckForm = ({ patientId, setPatient }: Props) => {
                 id="diagnosisCodes"
                 defaultValue="..."
                 size="small"
-                value={diagnosisCodesInput}
-                onChange={({ target }) => setDiagnosisCodesInput(target.value)}
+                value={diagnosisCodes.join(', ')}
+                onChange={onDiagnosisCodes}
             />
         </div>
         <div style={{margin: '20px 0'}}>
             <label>Health Check Rating (0-3)</label>
-            <select value={healthCheckRating} onChange={ onHealthCheckRating} required>
-                <option value={0}>Healthy</option>
-                    <option value={1}>LowRisk</option>
-                    <option value={2}>HighRisk</option>
-                    <option value={3}>CriticalRisk</option>
+            <select value={healthCheckRating} onChange={(e) => onHealthCheckRating(e, setHealthCheckRating)} required>
+                <option value="0">Healthy</option>
+                    <option value="1">LowRisk</option>
+                    <option value="2">HighRisk</option>
+                    <option value="3">CriticalRisk</option>
             </select>
         </div>
         <Grid container justifyContent="space-between" sx={{ marginTop: 2 }}>
