@@ -1,4 +1,4 @@
-import { Rating } from '@mui/material';
+import { Rating, Tooltip, Typography } from '@mui/material';
 import { Favorite } from '@mui/icons-material';
 
 import { styled } from '@mui/material/styles';
@@ -25,18 +25,31 @@ const HEALTHBAR_TEXTS = [
 ];
 
 const HealthRatingBar = ({ rating, showText }: BarProps) => {
+  console.log('RATE:: ', rating);
   return (
     <div className="health-bar">
-      <StyledRating
-        readOnly
-        value={4 - rating}
-        max={4}
-        icon={<Favorite fontSize="inherit" />}
-      />
-
-      {showText ? <p>{HEALTHBAR_TEXTS[rating]}</p> : null}
+      <Tooltip
+        title={showText ? <p>{HEALTHBAR_TEXTS[rating]}</p> : <p>not rated</p>}
+      >
+        <Typography sx={{ display: 'inline-block', cursor: 'pointer'}}>
+          <StyledRating
+            readOnly
+                value={4 - rating}
+                max={4}
+                icon={<Favorite fontSize="inherit" />}
+           />
+        </Typography>
+      </Tooltip>
+  
     </div>
   );
 };
 
 export default HealthRatingBar;
+
+// {<StyledRating
+//                 readOnly
+//                 value={4 - rating}
+//                 max={4}
+//                 icon={<Favorite fontSize="inherit" />}
+//               />}

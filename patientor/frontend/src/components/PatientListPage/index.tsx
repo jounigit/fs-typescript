@@ -3,7 +3,9 @@ import { Box, Table, Button, TableHead, Typography, TableCell, TableRow, TableBo
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-import { PatientFormValues, Patient } from "../../types";
+import { PatientFormValues, Patient, Entry, 
+  HealthCheckEntry 
+} from "../../types";
 import AddPatientModal from "../AddPatientModal";
 
 import HealthRatingBar from "../HealthRatingBar";
@@ -63,6 +65,7 @@ const PatientListPage = ( ) => {
         </TableHead>
         <TableBody>
           {Object.values(patients).map((patient: Patient) => (
+            // {}
             <TableRow key={patient.id}>
               
               <TableCell>
@@ -74,7 +77,7 @@ const PatientListPage = ( ) => {
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
               <TableCell>
-                <HealthRatingBar showText={false} rating={1} />
+                <HealthRatingBar showText={true} rating={getRatingNumber(patient.entries)} />
               </TableCell>
             </TableRow>
           ))}
@@ -94,3 +97,26 @@ const PatientListPage = ( ) => {
 };
 
 export default PatientListPage;
+
+const getRatingNumber = (entries: Entry[]): number => {
+  if (!entries) {
+    return 1;
+  }
+
+  const healthCheckEntries = entries.map((entry) => entry.type === 'HealthCheck');
+
+  if (healthCheckEntries) {
+    const healthCheckEntries = entries.filter(
+      (entry): entry is HealthCheckEntry => entry.type === 'HealthCheck'
+    );
+
+    const rates: number[] = healthCheckEntries.map(entry => entry.healthCheckRating);
+    const len = rates.length;
+    const sum = rates.reduce((acc, curr) => acc + curr, 0);
+
+    const average = sum / len;
+    return Math.round(average);
+  }
+
+  return 1;
+};

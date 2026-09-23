@@ -7,11 +7,13 @@ import FemaleIcon from '@mui/icons-material/Female';
 import { Entries } from "../Entries";
 import patientService from "../../services/patients";
 import EntryForm from "../AddEntry/EntryForm";
+import useDiagnosis from "../../hooks/useDiagnosis";
 // import AddHealthCheckForm from "../AddEntry/HealthCheckForm";
 
 const PatientPage = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const [patient, setPatient] = useState<Patient | undefined>(undefined);
+  const { diagnosis } = useDiagnosis()!;
 
   useEffect(() => {
     if (!id) return;
@@ -22,14 +24,13 @@ const PatientPage = (): JSX.Element => {
   const icon = iconChoose(patient);
   const entries = patient.entries;
 
-  console.log('PATIENT:: ', patient);
   return (
     <div>
       <h1>{patient.name} {icon}</h1>
       <p style={{marginBottom: '-0.5rem'}}>SSN: {patient.ssn}</p>
       <p style={{marginBottom: '-0.5rem'}}>Occupation: {patient.occupation}</p>
       <p style={{marginBottom: '-0.5rem'}}>Date of Birth: {patient.dateOfBirth}</p>
-      {id && <EntryForm patientId={id} setPatient={setPatient} />}
+      {id && <EntryForm patientId={id} setPatient={setPatient} diagnosis={diagnosis} />}
       {/* {id && <AddHealthCheckForm patientId={id} setPatient={setPatient} /> } */}
 
       <h3>entries</h3>

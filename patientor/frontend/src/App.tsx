@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import { Button, Divider, Container, Typography } from '@mui/material';
 import PatientListPage from "./components/PatientListPage";
 import PatientPage from "./components/PatientPage";
+import { DiagnosisContextProvider } from "./DiagnosisContext";
 
 const App = () => {
   
@@ -16,10 +17,12 @@ const App = () => {
             Home
           </Button>
           <Divider sx={{ marginY: 2 }} />
-          <Routes>
-            <Route path="/" element={<PatientListPage />} />
-            <Route path="/patients/:id" element={<PatientPage />} />
-          </Routes>
+          <DiagnosisContextProvider>
+            <Routes>
+              <Route path="/" element={<PatientListPage />} />
+              <Route path="/patients/:id" element={<PatientPage />} />
+            </Routes>
+          </DiagnosisContextProvider>
         </Container>
       </Router>
     </div>
