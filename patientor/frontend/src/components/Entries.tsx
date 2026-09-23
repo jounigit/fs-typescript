@@ -6,7 +6,7 @@ import {
     type HospitalEntry,
     type OccupationalHealthcareEntry
 } from '../types';
-import { listCodes } from './helpers';
+import { listCodes, showDischarge } from './helpers';
 import HealthRating from './HealthRating';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
@@ -39,7 +39,13 @@ const Hospital: FC<{entry: HospitalEntry}> = ({entry}) => {
         <div>
             <p style={textStyle}>{entry.date} <LocalHospitalIcon /></p>
             <p style={italicStyle}>{entry.description}</p>
-            {entry.diagnosisCodes && listCodes(entry.diagnosisCodes)}
+            { entry.diagnosisCodes && 
+                <p style={{marginBottom: '30px'}}>
+                    listCodes(entry.diagnosisCodes)
+                </p>
+             }
+            
+            {entry.discharge && showDischarge(entry.discharge)}
             <p style={textStyle}>diagnose by {entry.specialist}</p>
         </div>
     );
@@ -51,7 +57,10 @@ const OccupationalHealthcare:
         <div>
             <p style={textStyle}>{entry.date} <MedicalInformationIcon /></p>
             <p style={italicStyle}>{entry.description}</p>
-            { entry.diagnosisCodes && listCodes(entry.diagnosisCodes) }
+            <p style={{marginBottom: '30px'}}>
+                { entry.diagnosisCodes && listCodes(entry.diagnosisCodes) }
+            </p>
+            <p style={italicStyle}>Employer: {entry.employerName}</p>
             <p style={textStyle}>diagnose by {entry.specialist}</p>
         </div>
         );

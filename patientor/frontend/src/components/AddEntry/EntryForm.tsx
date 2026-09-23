@@ -175,6 +175,7 @@ const EntryForm = ({ patientId, setPatient, diagnosis }: Props) => {
             id="diagnosis-codes"
             multiple
             fullWidth
+            size="small"
             value={diagnosisCodesInput}
             onChange={onDiagnosisCodesChange}
             input={<OutlinedInput label="Multiple Select" />}
@@ -200,7 +201,6 @@ const EntryForm = ({ patientId, setPatient, diagnosis }: Props) => {
               value={healthCheckRating}
               onChange={onHealthCheckRating}
             >
-              {/* 4. Mapataan optiot taulukosta MenuItem-komponenteiksi */}
               {healthCheckOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
@@ -274,7 +274,7 @@ const EntryForm = ({ patientId, setPatient, diagnosis }: Props) => {
         <Grid container justifyContent="space-between" sx={{ marginTop: 2 }}>
           <Grid size="auto">
             <Button type="submit" variant="contained">
-              Add
+              Add New Entry
             </Button>
             <Button
               color="inherit"

@@ -1,5 +1,5 @@
 import { JSX, } from "react";
-import { Diagnosis } from "../../types";
+import { Diagnosis, Discharge } from "../../types";
 import { DiagnosisName } from "./DiagnoseName";
 
 export function listCodes(codes: Array<Diagnosis['code']>): JSX.Element {
@@ -18,3 +18,6 @@ export function listCodes(codes: Array<Diagnosis['code']>): JSX.Element {
     );
 }
 
+export function showDischarge(disCharge: Discharge): JSX.Element {
+    return <p style={{paddingBottom: '4px'}}>Discharge: {disCharge.date} {disCharge.criteria}</p>;
+}
